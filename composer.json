@@ -1,0 +1,20 @@
+{
+    "name": "burger/eventpublisher",
+    "description": "subscribe and listen for events",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Darnell Collins",
+            "email": "collinsdarnell44@gmail.com"
+        }
+    ],
+    "require-dev": {
+        "phpunit/phpunit": "^7.5"
+    },
+    "autoload": {
+        "psr-4" : {
+            "Burger\\Event\\" : "src/"
+        }
+    }
+}
