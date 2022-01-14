@@ -1,5 +1,5 @@
 {
-    "name": "burger/eventpublisher",
+    "name": "burger/event-publisher",
     "description": "subscribe and listen for events",
     "type": "library",
     "license": "MIT",
