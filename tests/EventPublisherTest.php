@@ -9,7 +9,7 @@ class EventPublisherTest extends TestCase
     private $eventPublisher;
 
     // remove all events before each test
-    public function setUp()
+    public function setUp(): void
     {
         $this->counter = 0;
         $this->eventPublisher = EventPublisher::instance();
