@@ -1,12 +1,15 @@
 <?php
 
+namespace Tests\Unit;
+
 use Burger\Event\EventPublisher;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 
 class EventPublisherTest extends TestCase
 {
     public $counter = 0;
     private $eventPublisher;
+    private $filesFirectory = __DIR__ . '/../';
 
     // remove all events before each test
     public function setUp(): void
@@ -35,7 +38,7 @@ class EventPublisherTest extends TestCase
     public function testItCanAddAFileFunctionEventHandlerWithAnEvent()
     {
         $event = 'login';
-        $handler = [__DIR__ . '/Files/globalFunctionFile.php', 'doStuffGlobalFunction'];
+        $handler = [$this->filesFirectory . '/Files/globalFunctionFile.php', 'doStuffGlobalFunction'];
 
         // there should be no handlers for the event
         $this->assertFalse($this->eventPublisher->hasEventHandlers($event));
@@ -51,7 +54,7 @@ class EventPublisherTest extends TestCase
     public function testItCanAddAnObjectMethodEventHandlerWithAnEvent()
     {
         $event = 'login';
-        require_once __DIR__ . '/Files/ClassWithMethod.php';
+        require_once $this->filesFirectory . '/Files/ClassWithMethod.php';
         $test = new \SampleClass();
         $handler = [$test, 'doStuffClassMethod'];
 
@@ -97,7 +100,7 @@ class EventPublisherTest extends TestCase
     public function testItCannotAddAFunctionIfFileDoesNotExist()
     {
         $event = 'login';
-        $handler = [__DIR__ . '/fileDoesNotExist.php', 'functionName'];
+        $handler = [$this->filesFirectory . '/fileDoesNotExist.php', 'functionName'];
 
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage("The file {$handler[0]} does not exist.");
@@ -109,7 +112,7 @@ class EventPublisherTest extends TestCase
     public function testItCannotAddAFunctionIfFileExistsButFunctionDoesNot()
     {
         $event = 'login';
-        $handler = [__DIR__ . '/Files/globalFunctionFile.php', 'functionNotExist'];
+        $handler = [$this->filesFirectory . '/Files/globalFunctionFile.php', 'functionNotExist'];
 
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage("The function {$handler[1]} in file {$handler[0]} does not exist.");
@@ -120,7 +123,7 @@ class EventPublisherTest extends TestCase
 
     public function testItCannotAddAMethodIfObjectIsNotCallable()
     {
-        require_once __DIR__ . '/Files/ClassWithMethod.php';
+        require_once $this->filesFirectory . '/Files/ClassWithMethod.php';
         $event = 'login';
         $test = new \SampleClass();
 
@@ -191,7 +194,7 @@ class EventPublisherTest extends TestCase
     {
         $event = 'login';
 
-        require_once __DIR__ . '/Files/SampleSubscriber.php';
+        require_once $this->filesFirectory . '/Files/SampleSubscriber.php';
         $subscriber = new \SampleSubscriber();
 
         // there should be no handlers for the event
@@ -213,12 +216,12 @@ class EventPublisherTest extends TestCase
             $data->counter++;
         };
 
-        $handler2 = [__DIR__ . '/Files/globalFunctionFile.php', 'doStuffGlobalFunction'];
+        $handler2 = [$this->filesFirectory . '/Files/globalFunctionFile.php', 'doStuffGlobalFunction'];
 
-        require_once __DIR__ . '/Files/ClassWithMethod.php';
+        require_once $this->filesFirectory . '/Files/ClassWithMethod.php';
         $handler3 = [new \SampleClass(), 'doStuffClassMethod'];
 
-        require_once __DIR__ . '/Files/SampleSubscriber.php';
+        require_once $this->filesFirectory . '/Files/SampleSubscriber.php';
         $subscriber = new \SampleSubscriber();
 
         $this->eventPublisher->on('*', $handler1);
